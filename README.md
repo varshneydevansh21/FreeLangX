@@ -19,6 +19,8 @@ Perfect Audio & Subtitle Sync: Bundles subtitle text payloads with generated aud
 Netflix-Style Visual Overlays: Injects non-intrusive, high-contrast, professional-grade subtitle elements directly over web video players.
 
 Cloud-Ready Infrastructure: Scalable FastAPI backend deployed on cloud infrastructure for 24/7 uptime.
+👉 Note: The backend for this extension runs on a custom Python FastAPI cloud server. [Click here to view the Backend Source Code.
+https://github.com/varshneydevansh21/freelangx-backend
 
 🛠️ Tech Stack
 
