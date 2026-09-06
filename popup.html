@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FreeLangX</title>
+    <style>
+        /* Base Extension Styles */
+        body { 
+            width: 320px; 
+            min-height: 400px; 
+            margin: 0;
+            background-color: #0f172a; /* bg-slate-900 */
+            color: #f1f5f9; /* text-slate-100 */
+            font-family: system-ui, -apple-system, sans-serif;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #334155; /* border-slate-700 */
+        }
+
+        /* Animated Title */
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+            /* Using a vibrant Cyan and Pink/Magenta combo for a realistic, dynamic feel */
+            background: linear-gradient(270deg, #00f2fe, #4facfe, #f093fb, #f5576c);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 4s ease infinite;
+        }
+
+        .status-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-text {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+            text-transform: uppercase;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ef4444; /* red-500 */
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator.active {
+            background-color: #22c55e; /* green-500 */
+            box-shadow: 0 0 8px rgba(34, 197, 94, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #cbd5e1;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            background-color: #1e293b; /* bg-slate-800 */
+            border: 1px solid #475569; /* border-slate-600 */
+            color: white;
+            font-size: 0.875rem;
+            border-radius: 8px;
+            padding: 10px;
+            outline: none;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        
+        select:focus {
+            border-color: #3b82f6;
+        }
+
+        .info-box {
+            background-color: rgba(30, 58, 138, 0.3);
+            border: 1px solid #1e40af;
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 0.75rem;
+            color: #bfdbfe;
+            line-height: 1.4;
+        }
+        
+        .info-box p { margin: 0; }
+
+        /* Controls */
+        .controls {
+            margin-top: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        /* Purple Start Button */
+        #startBtn {
+            background-color: #9333ea; /* Purple */
+            color: white;
+        }
+
+        #startBtn:hover:not(:disabled) { background-color: #7e22ce; }
+        
+        #startBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Red Stop Button */
+        #stopBtn {
+            background-color: #dc2626; /* Red */
+            color: white;
+        }
+
+        #stopBtn:hover:not(:disabled) { background-color: #b91c1c; }
+        
+        /* Keep disabled stop button gray so it doesn't look active */
+        #stopBtn:disabled {
+            background-color: #334155;
+            color: #cbd5e1;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Utility classes for JS toggling */
+        .opacity-50 { opacity: 0.5; }
+        .cursor-not-allowed { cursor: not-allowed; }
+        .bg-green-500 { background-color: #22c55e !important; }
+        .bg-red-500 { background-color: #ef4444 !important; }
+        .shadow-green { box-shadow: 0 0 8px rgba(34, 197, 94, 0.6) !important; }
+        .shadow-red { box-shadow: 0 0 8px rgba(239, 68, 68, 0.6) !important; }
+    </style>
+</head>
+<body>
+    
+    <!-- Header -->
+    <div class="header">
+        <h1 class="title">FreeLangX</h1>
+        <div class="status-container">
+            <span id="status-text" class="status-text">Inactive</span>
+            <div id="status-indicator" class="status-indicator"></div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Language Selector (Alphabetized) -->
+        <div>
+            <label for="languageSelect">Translate Audio To:</label>
+            <select id="languageSelect">
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="zh">🇨🇳 Chinese</option>
+                <option value="en">🇬🇧 English</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="hi">🇮🇳 Hindi</option>
+                <option value="it">🇮🇹 Italian</option>
+                <option value="ja">🇯🇵 Japanese</option>
+                <option value="ko">🇰🇷 Korean</option>
+                <option value="pt">🇵🇹 Portuguese</option>
+                <option value="ru">🇷🇺 Russian</option>
+                <option value="es">🇪🇸 Spanish</option>
+            </select>
+        </div>
+
+        <!-- Warning/Info -->
+        <div class="info-box">
+            <p>Ensure audio or a video is playing in the current tab before starting.</p>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <button id="startBtn">Start Translation</button>
+        <button id="stopBtn" disabled>Stop</button>
+    </div>
+
+    <!-- External Script mapping UI to logic -->
+    <script src="popup.js"></script>
+</body>
+</html>
